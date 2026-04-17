@@ -924,23 +924,114 @@
   <div class="bottom-safe"></div>
 </div>
 
+<style>
+  .sync-bar {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 16px; background: white;
+    border-bottom: 1px solid var(--border);
+    font-size: 11px; color: var(--text-muted);
+  }
+  .sync-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: #ccc; flex-shrink: 0; transition: background 0.3s;
+  }
+  .sync-dot.syncing { background: var(--champagne); animation: pulse 1s infinite; }
+  .sync-dot.ok { background: #7ec98a; }
+  .sync-dot.err { background: #e24b4a; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+  .setup-overlay {
+    position: fixed; inset: 0; background: rgba(253,240,243,0.97);
+    z-index: 999; display: flex; align-items: center; justify-content: center;
+    padding: 24px;
+  }
+  .setup-box {
+    background: white; border: 1px solid var(--border-strong);
+    border-radius: 20px; padding: 28px 24px; max-width: 340px; width: 100%;
+    text-align: center;
+  }
+  .setup-box h2 {
+    font-family: 'Cormorant Garamond', serif; font-size: 22px;
+    font-weight: 300; color: var(--rose-deep); margin-bottom: 6px;
+  }
+  .setup-box p { font-size: 13px; color: var(--text-muted); line-height: 1.6; margin-bottom: 18px; }
+  .setup-box input {
+    width: 100%; border: 1px solid var(--border-strong); border-radius: 10px;
+    padding: 10px 14px; font-size: 13px; font-family: 'DM Sans',sans-serif;
+    color: var(--text); margin-bottom: 10px; outline: none;
+  }
+  .setup-box input:focus { border-color: var(--rose); }
+  .setup-box button {
+    width: 100%; background: var(--rose); color: white; border: none;
+    border-radius: 10px; padding: 12px; font-size: 13px; font-weight: 500;
+    font-family: 'DM Sans',sans-serif; cursor: pointer; margin-bottom: 8px;
+  }
+  .setup-box .setup-link {
+    font-size: 11px; color: var(--rose); text-decoration: none;
+    display: block; margin-top: 4px;
+  }
+  .setup-box .setup-note {
+    font-size: 10px; color: var(--text-muted); margin-top: 12px; line-height: 1.5;
+  }
+</style>
+
+<!-- Setup overlay -->
+<div class="setup-overlay" id="setup-overlay">
+  <div class="setup-box">
+    <span style="font-size:28px;display:block;margin-bottom:10px;">🌸</span>
+    <h2>Gedeelde checklist</h2>
+    <p>Voer de gedeelde code in zodat iedereen dezelfde vinkjes ziet. Vraag de code aan degene die de website heeft aangemaakt.</p>
+    <input type="text" id="bin-input" placeholder="Plak hier de bin-code..." autocomplete="off" />
+    <button onclick="connectBin()">Verbinden</button>
+    <div style="border-top:1px solid var(--border); padding-top:12px; margin-top:4px;">
+      <p style="font-size:11px;color:var(--text-muted);margin-bottom:8px;">Eerste keer? Maak een nieuwe gedeelde ruimte aan:</p>
+      <button onclick="createBin()" style="background:white;color:var(--rose-deep);border:1px solid var(--border-strong);">Nieuwe code aanmaken</button>
+    </div>
+    <div class="setup-note">Gratis via JSONBin.io · Vinkjes worden voor iedereen gesynchroniseerd</div>
+  </div>
+</div>
+
+<!-- Sync status bar -->
+<div class="sync-bar" id="sync-bar" style="display:none;">
+  <div class="sync-dot" id="sync-dot"></div>
+  <span id="sync-label">Verbonden</span>
+  <span style="margin-left:auto; cursor:pointer; font-size:10px; color:var(--rose);" onclick="disconnectBin()">Afmelden</span>
+</div>
+
 <script>
-  function showTab(name) {
-    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-    document.getElementById('tab-' + name).classList.add('active');
-    event.currentTarget.classList.add('active');
+  const BIN_API = 'https://api.jsonbin.io/v3/b';
+  const MASTER_KEY = '$2a$10$placeholder_replace_this_with_real_key';
+  let binId = null;
+  let pollTimer = null;
+  let lastHash = '';
+  let isSaving = false;
+
+  // ── helpers ──────────────────────────────────────────────────────
+  function getState() {
+    const s = {};
+    document.querySelectorAll('.check-item').forEach((el, i) => { s[i] = el.classList.contains('done'); });
+    return s;
+  }
+
+  function applyState(s) {
+    document.querySelectorAll('.check-item').forEach((el, i) => {
+      el.classList.toggle('done', !!s[i]);
+      const cb = el.querySelector('.cb');
+      if (cb) cb.classList.toggle('checked', !!s[i]);
+    });
     updateProgress();
   }
 
-  function toggleCheck(el) {
-    el.classList.toggle('done');
-    saveState();
-    updateProgress();
+  function stateHash(s) { return JSON.stringify(s); }
+
+  function setSyncStatus(status, label) {
+    const dot = document.getElementById('sync-dot');
+    const lbl = document.getElementById('sync-label');
+    dot.className = 'sync-dot ' + (status || '');
+    lbl.textContent = label || '';
   }
 
+  // ── progress ─────────────────────────────────────────────────────
   function updateProgress() {
-    // Checklist
     const clItems = document.querySelectorAll('#checklist-items .check-item');
     const clDone = document.querySelectorAll('#checklist-items .check-item.done').length;
     const clPct = clItems.length ? Math.round(clDone / clItems.length * 100) : 0;
@@ -948,7 +1039,6 @@
     document.getElementById('cl-pct').textContent = clPct + '%';
     document.getElementById('cl-bar').style.width = clPct + '%';
 
-    // Boodschappen
     const bItems = document.querySelectorAll('#bood-items .check-item');
     const bDone = document.querySelectorAll('#bood-items .check-item.done').length;
     const bPct = bItems.length ? Math.round(bDone / bItems.length * 100) : 0;
@@ -957,25 +1047,119 @@
     document.getElementById('bood-bar').style.width = bPct + '%';
   }
 
-  function saveState() {
-    const state = {};
-    document.querySelectorAll('.check-item').forEach((el, i) => {
-      state[i] = el.classList.contains('done');
-    });
-    try { localStorage.setItem('kisa18', JSON.stringify(state)); } catch(e) {}
-  }
-
-  function loadState() {
-    try {
-      const state = JSON.parse(localStorage.getItem('kisa18') || '{}');
-      document.querySelectorAll('.check-item').forEach((el, i) => {
-        if (state[i]) el.classList.add('done');
-      });
-    } catch(e) {}
+  // ── tab nav ───────────────────────────────────────────────────────
+  function showTab(name) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    event.currentTarget.classList.add('active');
     updateProgress();
   }
 
-  loadState();
+  // ── JSONBin API ───────────────────────────────────────────────────
+  async function createBin() {
+    setSyncStatus('syncing', 'Aanmaken...');
+    try {
+      const res = await fetch(BIN_API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Bin-Private': 'false' },
+        body: JSON.stringify({ checks: getState(), v: 1 })
+      });
+      const data = await res.json();
+      const id = data.metadata?.id;
+      if (!id) throw new Error('Geen ID teruggekregen');
+      document.getElementById('bin-input').value = id;
+      alert('✅ Jouw code is: ' + id + '\n\nDeel deze code met de anderen!');
+      await connectBinWithId(id);
+    } catch(e) {
+      setSyncStatus('err', 'Fout bij aanmaken');
+      alert('Er ging iets mis. Probeer het opnieuw.');
+    }
+  }
+
+  async function connectBin() {
+    const id = document.getElementById('bin-input').value.trim();
+    if (!id) { alert('Vul eerst een code in.'); return; }
+    await connectBinWithId(id);
+  }
+
+  async function connectBinWithId(id) {
+    binId = id;
+    localStorage.setItem('kisa18_bin', id);
+    document.getElementById('setup-overlay').style.display = 'none';
+    document.getElementById('sync-bar').style.display = 'flex';
+    setSyncStatus('syncing', 'Laden...');
+    await pullState();
+    startPolling();
+  }
+
+  function disconnectBin() {
+    if (!confirm('Afmelden? Je vinkjes blijven bewaard in de cloud.')) return;
+    clearInterval(pollTimer);
+    binId = null;
+    localStorage.removeItem('kisa18_bin');
+    document.getElementById('setup-overlay').style.display = 'flex';
+    document.getElementById('sync-bar').style.display = 'none';
+  }
+
+  async function pullState() {
+    if (!binId) return;
+    try {
+      const res = await fetch(`${BIN_API}/${binId}/latest`);
+      if (!res.ok) throw new Error(res.status);
+      const data = await res.json();
+      const s = data.record?.checks;
+      if (!s) return;
+      const h = stateHash(s);
+      if (h !== lastHash) {
+        lastHash = h;
+        applyState(s);
+      }
+      setSyncStatus('ok', 'Gesynchroniseerd');
+    } catch(e) {
+      setSyncStatus('err', 'Geen verbinding');
+    }
+  }
+
+  async function pushState() {
+    if (!binId || isSaving) return;
+    isSaving = true;
+    setSyncStatus('syncing', 'Opslaan...');
+    try {
+      const s = getState();
+      await fetch(`${BIN_API}/${binId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ checks: s, v: 1 })
+      });
+      lastHash = stateHash(s);
+      setSyncStatus('ok', 'Opgeslagen ✓');
+    } catch(e) {
+      setSyncStatus('err', 'Opslaan mislukt');
+    }
+    isSaving = false;
+  }
+
+  function startPolling() {
+    clearInterval(pollTimer);
+    pollTimer = setInterval(pullState, 5000);
+  }
+
+  // ── toggle (called from HTML onclick) ────────────────────────────
+  function toggleCheck(el) {
+    el.classList.toggle('done');
+    updateProgress();
+    if (binId) pushState();
+  }
+
+  // ── init ─────────────────────────────────────────────────────────
+  (function init() {
+    updateProgress();
+    const savedId = localStorage.getItem('kisa18_bin');
+    if (savedId) {
+      connectBinWithId(savedId);
+    }
+  })();
 </script>
 </body>
 </html>
