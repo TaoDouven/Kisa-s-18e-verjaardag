@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Kisa 18 🌸</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --rose: #c97d8e;
+    --rose-light: #f5dde3;
+    --rose-pale: #fdf0f3;
+    --rose-deep: #8b4a5a;
+    --champagne: #e8d5b7;
+    --champagne-light: #faf5ec;
+    --ivory: #faf8f5;
+    --text: #3d2a2f;
+    --text-muted: #9a7a82;
+    --border: rgba(201,125,142,0.2);
+    --border-strong: rgba(201,125,142,0.4);
+    --shadow: 0 2px 20px rgba(139,74,90,0.08);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--ivory);
+    color: var(--text);
+    min-height: 100vh;
+    padding-bottom: 80px;
+  }
+
+  /* Hero */
+  .hero {
+    background: var(--rose-pale);
+    padding: 48px 24px 32px;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; left: -60px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: rgba(201,125,142,0.07);
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; right: -40px;
+    width: 160px; height: 160px;
+    border-radius: 50%;
+    background: rgba(232,213,183,0.15);
+  }
+  .hero-petal {
+    font-size: 28px;
+    margin-bottom: 8px;
+    display: block;
+  }
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 38px;
+    font-weight: 300;
+    color: var(--rose-deep);
+    letter-spacing: 0.02em;
+    line-height: 1.1;
+    margin-bottom: 4px;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--rose);
+  }
+  .hero-sub {
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 300;
+    margin-top: 6px;
+  }
+  .hero-date {
+    display: inline-block;
+    margin-top: 16px;
+    background: white;
+    border: 1px solid var(--border-strong);
+    border-radius: 20px;
+    padding: 6px 18px;
+    font-size: 12px;
+    color: var(--rose-deep);
+    font-weight: 500;
+    letter-spacing: 0.04em;
+  }
+
+  /* Nav tabs */
+  .nav-wrap {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: white;
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .nav-wrap::-webkit-scrollbar { display: none; }
+  .nav {
+    display: flex;
+    padding: 0 16px;
+    gap: 0;
+    min-width: max-content;
+  }
+  .nav-btn {
+    padding: 14px 18px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-muted);
+    border: none;
+    background: none;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    transition: all 0.2s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .nav-btn.active {
+    color: var(--rose-deep);
+    border-bottom-color: var(--rose);
+  }
+
+  /* Sections */
+  .section { display: none; padding: 20px 16px; }
+  .section.active { display: block; }
+
+  /* Section heading */
+  .sec-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px;
+    font-weight: 300;
+    color: var(--rose-deep);
+    margin-bottom: 4px;
+  }
+  .sec-sub {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 20px;
+  }
+
+  /* Progress bar */
+  .progress-wrap { margin-bottom: 20px; }
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+  .progress-bar {
+    height: 4px;
+    background: var(--rose-light);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--rose);
+    border-radius: 2px;
+    transition: width 0.4s ease;
+  }
+
+  /* Category label */
+  .cat-label {
+    font-size: 10px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--rose);
+    padding: 16px 0 8px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 2px;
+  }
+  .cat-label:first-child { padding-top: 0; }
+
+  /* Checklist item */
+  .check-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: opacity 0.2s;
+    user-select: none;
+  }
+  .check-item:last-child { border-bottom: none; }
+  .check-item:active { opacity: 0.7; }
+
+  .cb {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 1.5px solid var(--rose);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    background: white;
+  }
+  .cb svg { display: none; width: 10px; height: 10px; }
+  .check-item.done .cb {
+    background: var(--rose);
+    border-color: var(--rose);
+  }
+  .check-item.done .cb svg { display: block; }
+
+  .check-body { flex: 1; min-width: 0; }
+  .check-name {
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.4;
+    transition: color 0.2s;
+  }
+  .check-item.done .check-name {
+    color: var(--text-muted);
+    text-decoration: line-through;
+  }
+  .check-detail {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 1px;
+  }
+  .check-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 3px;
+    flex-shrink: 0;
+  }
+  .check-price {
+    font-size: 12px;
+    color: var(--rose-deep);
+    font-weight: 500;
+  }
+  .badge {
+    font-size: 9px;
+    padding: 2px 7px;
+    border-radius: 10px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+  }
+  .badge-store { background: var(--rose-pale); color: var(--rose-deep); border: 1px solid var(--border-strong); }
+  .badge-piano { background: #fbeaf0; color: #72243e; }
+  .badge-acoustic { background: #faeeda; color: #633806; }
+  .badge-ambient { background: #eeedfe; color: #3c3489; }
+  .badge-18 { background: #fbeaf0; color: #72243e; }
+  .badge-vibe { background: #f5f5f5; color: #555; }
+  .badge-energy { background: #eaf3de; color: #3b6d11; }
+
+  /* Card */
+  .card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+  .card-header {
+    background: var(--rose-pale);
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  .card-num {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--rose-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--rose-deep);
+    flex-shrink: 0;
+  }
+  .card-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px;
+    font-weight: 400;
+    color: var(--rose-deep);
+    flex: 1;
+  }
+  .card-time {
+    font-size: 10px;
+    color: var(--text-muted);
+  }
+  .card-body { padding: 14px 16px; }
+
+  .step {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+    align-items: flex-start;
+  }
+  .step-n {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1px solid var(--border-strong);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    color: var(--rose);
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .step-t { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+
+  .mat { display: flex; gap: 8px; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border); }
+  .mat:last-child { border-bottom: none; }
+  .mat-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--rose); flex-shrink: 0; }
+  .mat-name { font-size: 13px; color: var(--text-muted); flex: 1; }
+  .mat-qty { font-size: 11px; color: var(--text-muted); }
+
+  .tip {
+    background: var(--champagne-light);
+    border-left: 2px solid var(--champagne);
+    border-radius: 0 8px 8px 0;
+    padding: 10px 12px;
+    margin-top: 12px;
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+  .tip strong { color: var(--rose-deep); font-weight: 500; }
+
+  /* Total bar */
+  .total-bar {
+    background: var(--rose-pale);
+    border: 1px solid var(--border-strong);
+    border-radius: 14px;
+    padding: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+  }
+  .total-label { font-size: 13px; font-weight: 500; color: var(--rose-deep); }
+  .total-sub { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+  .total-amount { font-family: 'Cormorant Garamond', serif; font-size: 26px; color: var(--rose-deep); font-weight: 300; }
+
+  /* Track */
+  .track {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .track:last-child { border-bottom: none; }
+  .track-num { font-size: 11px; color: var(--text-muted); width: 16px; text-align: right; flex-shrink: 0; }
+  .track-info { flex: 1; min-width: 0; }
+  .track-title { font-size: 13px; font-weight: 500; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .track-artist { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
+
+  /* Timeline */
+  .timeline-item {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 0;
+  }
+  .tl-line-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+  }
+  .tl-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid var(--rose);
+    background: white;
+    flex-shrink: 0;
+    margin-top: 4px;
+  }
+  .tl-line {
+    width: 1px;
+    flex: 1;
+    background: var(--border);
+    margin: 4px 0;
+    min-height: 20px;
+  }
+  .tl-content { padding-bottom: 20px; flex: 1; }
+  .tl-time { font-size: 10px; color: var(--rose); font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; }
+  .tl-title { font-size: 14px; font-weight: 500; color: var(--text); margin: 2px 0; }
+  .tl-desc { font-size: 12px; color: var(--text-muted); line-height: 1.6; }
+
+  /* Divider */
+  .divider { height: 1px; background: var(--border); margin: 16px 0; }
+
+  /* Store section header */
+  .store-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 0 6px;
+  }
+  .store-name { font-size: 12px; font-weight: 500; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; }
+  .store-est { font-size: 11px; color: var(--rose); font-weight: 500; }
+
+  /* Spotify button */
+  .spotify-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #1DB954;
+    color: white;
+    border: none;
+    border-radius: 22px;
+    padding: 10px 20px;
+    font-size: 13px;
+    font-weight: 500;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    margin: 16px auto 0;
+    text-decoration: none;
+  }
+
+  /* Floating flower deco */
+  .deco {
+    text-align: center;
+    font-size: 18px;
+    letter-spacing: 8px;
+    color: var(--rose);
+    opacity: 0.4;
+    padding: 8px 0 0;
+  }
+
+  /* Bottom safe area */
+  .bottom-safe { height: 20px; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .section.active { animation: fadeUp 0.25s ease; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <span class="hero-petal">🌸</span>
+  <h1>Kisa wordt <em>achttien</em></h1>
+  <p class="hero-sub">Bloom & Golden Hour · tuin feest</p>
+  <span class="hero-date">20–30 gasten · buiten + tent + binnen</span>
+</div>
+
+<div class="nav-wrap">
+  <div class="nav">
+    <button class="nav-btn active" onclick="showTab('checklist')">Checklist</button>
+    <button class="nav-btn" onclick="showTab('boodschappen')">Boodschappen</button>
+    <button class="nav-btn" onclick="showTab('diy')">DIY Deco</button>
+    <button class="nav-btn" onclick="showTab('playlist')">Playlist</button>
+    <button class="nav-btn" onclick="showTab('planning')">Planning</button>
+  </div>
+</div>
+
+<!-- ===== CHECKLIST ===== -->
+<div id="tab-checklist" class="section active">
+  <p class="sec-title">Grote checklist</p>
+  <p class="sec-sub">Tik aan wat geregeld is</p>
+
+  <div class="progress-wrap">
+    <div class="progress-label">
+      <span id="cl-done">0 gedaan</span>
+      <span id="cl-pct">0%</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="cl-bar" style="width:0%"></div></div>
+  </div>
+
+  <div id="checklist-items">
+    <div class="cat-label">4 weken van tevoren</div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="cb"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      <div class="check-body"><div class="check-name">Buitentent huren of regelen</div><div class="check-detail">Partytent ± 3x6m voor 20–30 pers. · huur of leen</div></div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="cb"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      <div class="check-body"><div class="check-name">Maat tuin opmeten</div><div class="check-detail">Controleer of de tent past</div></div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="cb"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      <div class="check-body"><div class="check-name">Datum bevestigen</div><div class="check-detail">Tuin + binnen + buitentent combinatie</div></div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="cb"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      <div class="check-body"><div class="check-name">Gastenlijst maken</div><div class="check-detail">20–30 personen</div></div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="cb"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      <div class="check-body"><div class="check-name">Uitnodigingen versturen</div><div class="check-detail">WhatsApp of digitaal</div></div>
+    </div>
+
+    <div class="cat-label">2 weken van tevoren</div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="cb"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      <div class="check-body"><div class="check-name">Decoratie kopen</div><div class="check-detail">Action, Xenos, online</div></div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="cb"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      <div class="check-body"><div class="check-name">Spotify playlist aanmaken</div><div class="check-detail">Feest + instrumentaal</div></div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="cb"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      <div class="check-body"><div class="check-name">Foto's verzamelen voor fotomuur</div><div class="check-detail">Baby t/m nu van Kisa</div></div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="cb"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      <div class="check-body"><div class="check-name">Backdrop fotohoek regelen</div><div class="check-detail">Wit laken of stof</div></div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="cb"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      <div class="check-body"><div class="check-name">Wenskaartjes regelen</div><div class="check-detail">Voor het wensenpotje</div></div>
+    </div>
+
+    <div class="cat-label">1 week van tevoren</div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="cb"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      <div class="check-body"><div class="check-name">Boodschappen plannen</div><div class="check-detail">Lijst klaar zetten</div></div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="cb"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      <div class="check-body"><div class="check-name">Foto's afdrukken</div><div class="check-detail">Kruidvat app · ± €0,15 p/st</div></div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="cb"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      <div class="check-body"><div class="check-name">Ballonnenboog oefenen</div><div class="check-detail">YouTube DIY tutorial</div></div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="cb"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      <div class="check-body"><div class="check-name">Cupcake recept testen</div><div class="check-detail">Oud-roze frosting</div></div>
+    </div>
+
+    <div class="cat-label">Dag voor het feest</div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="cb"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      <div class="check-body"><div class="check-name">Buitentent ophalen of ophangen</div><div class="check-detail">Doe dit rustig de dag ervoor</div></div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="cb"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      <div class="check-body"><div class="check-name">Verse boodschappen halen</div><div class="check-detail">Bloemen, fruit, kaas</div></div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="cb"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      <div class="check-body"><div class="check-name">Cupcakes bakken</div><div class="check-detail">Met roze frosting</div></div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="cb"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      <div class="check-body"><div class="check-name">Tuin voorbereiden</div><div class="check-detail">Meubels neerzetten, schoonmaken</div></div>
+    </div>
+
+    <div class="cat-label">Dag zelf</div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="cb"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      <div class="check-body"><div class="check-name">Vroeg beginnen met decoreren</div><div class="check-detail">Minimaal 3 uur voor aanvang</div></div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="cb"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      <div class="check-body"><div class="check-name">Ballonnenboog ophangen</div></div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="cb"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      <div class="check-body"><div class="check-name">Fotomuur & fotohoek klaarzetten</div></div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="cb"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      <div class="check-body"><div class="check-name">Buffet en dessertafel opmaken</div></div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="cb"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      <div class="check-body"><div class="check-name">Muziek aanzetten</div><div class="check-detail">Instrumentaal bij aankomst</div></div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="cb"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      <div class="check-body"><div class="check-name">Genieten! 🌸</div><div class="check-detail">Kisa verdient het</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== BOODSCHAPPEN ===== -->
+<div id="tab-boodschappen" class="section">
+  <p class="sec-title">Boodschappen</p>
+  <p class="sec-sub">Tik aan wat je hebt · ± 25 personen</p>
+
+  <div class="progress-wrap">
+    <div class="progress-label">
+      <span id="bood-done">0 gedaan</span>
+      <span id="bood-pct">0%</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="bood-bar" style="width:0%"></div></div>
+  </div>
+
+  <div id="bood-items">
+    <div class="store-header"><span class="store-name">Action</span><span class="store-est">± €40–55</span></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="cb"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div><div class="check-body"><div class="check-name">Ballonnen oud roze, wit, champagne</div><div class="check-detail">3 zakjes</div></div><div class="check-right"><div class="check-price">± €6</div></div></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="cb"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div><div class="check-body"><div class="check-name">Lichtslingers warm wit</div><div class="check-detail">2 stuks, op batterij</div></div><div class="check-right"><div class="check-price">± €8</div></div></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="cb"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div><div class="check-body"><div class="check-name">Theelichtjes</div><div class="check-detail">1 pak (50 stuks)</div></div><div class="check-right"><div class="check-price">± €2</div></div></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="cb"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div><div class="check-body"><div class="check-name">Mini wasknijpertjes hout</div><div class="check-detail">1 pak</div></div><div class="check-right"><div class="check-price">± €2</div></div></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="cb"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div><div class="check-body"><div class="check-name">Dun touwtje / jute touw</div><div class="check-detail">1 rol</div></div><div class="check-right"><div class="check-price">± €1</div></div></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="cb"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div><div class="check-body"><div class="check-name">Droogbloemen / pampasgras</div><div class="check-detail">2–3 bossen</div></div><div class="check-right"><div class="check-price">± €8</div></div></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="cb"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div><div class="check-body"><div class="check-name">Papieren tafelkleed roze/wit</div><div class="check-detail">2 stuks</div></div><div class="check-right"><div class="check-price">± €3</div></div></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="cb"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div><div class="check-body"><div class="check-name">Goudkleurige stift</div><div class="check-detail">Voor welkomstbord</div></div><div class="check-right"><div class="check-price">± €2</div></div></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="cb"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div><div class="check-body"><div class="check-name">Spiegel of zwart karton</div><div class="check-detail">Welkomstbord</div></div><div class="check-right"><div class="check-price">± €3</div></div></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="cb"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div><div class="check-body"><div class="check-name">Servetjes roze/wit</div><div class="check-detail">2 pakken</div></div><div class="check-right"><div class="check-price">± €3</div></div></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="cb"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div><div class="check-body"><div class="check-name">Props fotohoek (zonnebril, sjerp "18")</div></div><div class="check-right"><div class="check-price">± €5</div></div></div>
+
+    <div class="divider"></div>
+    <div class="store-header"><span class="store-name">Verhuur / lenen · buitentent</span><span class="store-est">gratis–€60</span></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="cb"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div><div class="check-body"><div class="check-name">Partytent (± 3x6m) huren of lenen</div><div class="check-detail">Huurwinkel, Boels, familie/buren</div></div><div class="check-right"><div class="check-price">±€0–60</div></div></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="cb"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div><div class="check-body"><div class="check-name">Grondhaken of verzwaringszakken</div><div class="check-detail">Als de tent niet vastgebonden kan worden</div></div><div class="check-right"><div class="check-price">±€5</div></div></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="cb"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div><div class="check-body"><div class="check-name">Extra lichtslingers voor in de tent</div><div class="check-detail">Langs de tentdoeken hangen</div></div><div class="check-right"><div class="check-price">±€8</div></div></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="cb"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div><div class="check-body"><div class="check-name">Klaptafels & klapstoelen (indien nodig)</div><div class="check-detail">Huren of lenen via huurwinkel</div></div><div class="check-right"><div class="check-price">±€0–20</div></div></div>
+
+    <div class="divider"></div>
+    <div class="store-header"><span class="store-name">Albert Heijn</span><span class="store-est">± €75–95</span></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="cb"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div><div class="check-body"><div class="check-name">Kaas (belegen, brie, geitenkaas)</div><div class="check-detail">3 soorten ± 600g</div></div><div class="check-right"><div class="check-price">± €12</div></div></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="cb"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div><div class="check-body"><div class="check-name">Vleeswaren (salami, ham, chorizo)</div><div class="check-detail">3 pakjes</div></div><div class="check-right"><div class="check-price">± €7</div></div></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="cb"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div><div class="check-body"><div class="check-name">Crackers / broodjes assortiment</div><div class="check-detail">2–3 pakken</div></div><div class="check-right"><div class="check-price">± €5</div></div></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="cb"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div><div class="check-body"><div class="check-name">Druiven (rood + groen) & aardbeien</div><div class="check-detail">± 1 kg totaal</div></div><div class="check-right"><div class="check-price">± €6</div></div></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="cb"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div><div class="check-body"><div class="check-name">Mini wraps / tortilla's</div><div class="check-detail">2 pakken</div></div><div class="check-right"><div class="check-price">± €4</div></div></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="cb"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div><div class="check-body"><div class="check-name">Caprese: mozzarella, tomaten, basilicum</div><div class="check-detail">Voor ± 20 spiesjes</div></div><div class="check-right"><div class="check-price">± €7</div></div></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="cb"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div><div class="check-body"><div class="check-name">Roze limonade / frambozensiroop</div><div class="check-detail">2 flessen</div></div><div class="check-right"><div class="check-price">± €4</div></div></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="cb"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div><div class="check-body"><div class="check-name">Spa rood & blauw / bruiswater</div><div class="check-detail">4–6 flessen</div></div><div class="check-right"><div class="check-price">± €6</div></div></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="cb"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div><div class="check-body"><div class="check-name">Rosé wijn</div><div class="check-detail">3 flessen</div></div><div class="check-right"><div class="check-price">± €15</div></div></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="cb"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div><div class="check-body"><div class="check-name">Macarons roze (kant en klaar)</div><div class="check-detail">2 doosjes</div></div><div class="check-right"><div class="check-price">± €8</div></div></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="cb"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div><div class="check-body"><div class="check-name">Komkommer, munt, citroen</div><div class="check-detail">Voor fruitwater</div></div><div class="check-right"><div class="check-price">± €4</div></div></div>
+
+    <div class="divider"></div>
+    <div class="store-header"><span class="store-name">Bloemenmarkt / bloemist</span><span class="store-est">± €10–15</span></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="cb"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div><div class="check-body"><div class="check-name">Gipskruid (grote bos)</div><div class="check-detail">2 bossen</div></div><div class="check-right"><div class="check-price">± €5</div></div></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="cb"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div><div class="check-body"><div class="check-name">Lichte rozen of roosjes</div><div class="check-detail">1 bos ± 10 st</div></div><div class="check-right"><div class="check-price">± €5</div></div></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="cb"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div><div class="check-body"><div class="check-name">Eetbare bloemen voor de taart</div><div class="check-detail">1 bakje</div></div><div class="check-right"><div class="check-price">± €4</div></div></div>
+
+    <div class="divider"></div>
+    <div class="store-header"><span class="store-name">Kruidvat (app)</span><span class="store-est">± €3–5</span></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="cb"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div><div class="check-body"><div class="check-name">Foto's afdrukken (10x15 of polaroid)</div><div class="check-detail">15–20 stuks via app</div></div><div class="check-right"><div class="check-price">± €3–5</div></div></div>
+
+    <div class="divider"></div>
+    <div class="store-header"><span class="store-name">Hema / thuis</span><span class="store-est">± €15–25</span></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="cb"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div><div class="check-body"><div class="check-name">Bloem, suiker, boter, eieren</div><div class="check-detail">Voor cupcakes</div></div><div class="check-right"><div class="check-price">± €8</div></div></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="cb"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div><div class="check-body"><div class="check-name">Roze voedingskleurstof</div><div class="check-detail">Voor frosting</div></div><div class="check-right"><div class="check-price">± €2</div></div></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="cb"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div><div class="check-body"><div class="check-name">Slagroom</div><div class="check-detail">2 pakken</div></div><div class="check-right"><div class="check-price">± €4</div></div></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="cb"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div><div class="check-body"><div class="check-name">Papieren bekers & borden roze/wit</div><div class="check-detail">30 stuks</div></div><div class="check-right"><div class="check-price">± €5</div></div></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="cb"><svg viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div><div class="check-body"><div class="check-name">Kaarsjes voor de taart "18"</div><div class="check-detail">1 set</div></div><div class="check-right"><div class="check-price">± €3</div></div></div>
+  </div>
+
+  <div class="total-bar">
+    <div>
+      <div class="total-label">Totaal schatting</div>
+      <div class="total-sub">Afhankelijk van aanbiedingen</div>
+    </div>
+    <div class="total-amount">±€145–195</div>
+  </div>
+</div>
+
+<!-- ===== DIY DECO ===== -->
+<div id="tab-diy" class="section">
+  <p class="sec-title">DIY decoratie</p>
+  <p class="sec-sub">5 projecten · stap voor stap</p>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-num">1</div>
+      <div class="card-title">Ballonnenboog</div>
+      <div class="card-time">± 45 min</div>
+    </div>
+    <div class="card-body">
+      <div class="mat"><div class="mat-dot"></div><div class="mat-name">50–60 ballonnen oud roze, wit, champagne</div><div class="mat-qty">Action</div></div>
+      <div class="mat"><div class="mat-dot"></div><div class="mat-name">Decoratiedraad of vissnoer ± 2–3m</div><div class="mat-qty">Action</div></div>
+      <div class="mat"><div class="mat-dot"></div><div class="mat-name">Ballonpomp (handig)</div><div class="mat-qty">Action</div></div>
+      <div class="mat"><div class="mat-dot"></div><div class="mat-name">Dubbelzijdig tape of haakjes</div><div class="mat-qty">Huis</div></div>
+      <div class="divider"></div>
+      <div class="step"><div class="step-n">1</div><div class="step-t">Blaas ballonnen op in verschillende groottes — mix klein, middel en groot.</div></div>
+      <div class="step"><div class="step-n">2</div><div class="step-t">Bind telkens 2 ballonnen samen, dan 2 paar draaien = cluster van 4.</div></div>
+      <div class="step"><div class="step-n">3</div><div class="step-t">Rijg de clusters aan het vissnoer, wissel kleuren af.</div></div>
+      <div class="step"><div class="step-n">4</div><div class="step-t">Hang op met haakjes. Organisch hoeft niet perfect!</div></div>
+      <div class="tip"><strong>Tip:</strong> Zoek "organic balloon garland DIY" op YouTube. Pampasgras tussen de ballonnen = extra mooi.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-num">2</div>
+      <div class="card-title">Glazen potjes met kaarsen & bloemen</div>
+      <div class="card-time">± 20 min</div>
+    </div>
+    <div class="card-body">
+      <div class="mat"><div class="mat-dot"></div><div class="mat-name">6–10 glazen potjes of vaasjes</div><div class="mat-qty">Huis/Xenos</div></div>
+      <div class="mat"><div class="mat-dot"></div><div class="mat-name">Theelichtjes of kleine kaarsen</div><div class="mat-qty">Action/IKEA</div></div>
+      <div class="mat"><div class="mat-dot"></div><div class="mat-name">Droogbloemen of veldbloemen</div><div class="mat-qty">Markt</div></div>
+      <div class="mat"><div class="mat-dot"></div><div class="mat-name">Dun touw of roze lint</div><div class="mat-qty">Action</div></div>
+      <div class="divider"></div>
+      <div class="step"><div class="step-n">1</div><div class="step-t">Wassen en drogen — schone potjes zijn al mooi.</div></div>
+      <div class="step"><div class="step-n">2</div><div class="step-t">Bind een stukje touw of lint om de hals van het potje.</div></div>
+      <div class="step"><div class="step-n">3</div><div class="step-t">Zet in sommige potjes een kaarsje, in andere bloemen.</div></div>
+      <div class="step"><div class="step-n">4</div><div class="step-t">Groepeer in drietallen — losjes verspreid op tafel.</div></div>
+      <div class="tip"><strong>Tip:</strong> Gipskruid is supergoed koop en staat heel romantisch. Droogbloemen van Action zijn ook prima.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-num">3</div>
+      <div class="card-title">Fotomuur "Kisa through the years"</div>
+      <div class="card-time">± 30 min</div>
+    </div>
+    <div class="card-body">
+      <div class="mat"><div class="mat-dot"></div><div class="mat-name">15–20 afgedrukte foto's van Kisa</div><div class="mat-qty">Kruidvat</div></div>
+      <div class="mat"><div class="mat-dot"></div><div class="mat-name">Dun touwtje of jute touw (2–3m)</div><div class="mat-qty">Action</div></div>
+      <div class="mat"><div class="mat-dot"></div><div class="mat-name">Mini houten wasknijpertjes</div><div class="mat-qty">Action</div></div>
+      <div class="mat"><div class="mat-dot"></div><div class="mat-name">Lichtsnoer (optioneel)</div><div class="mat-qty">Action/IKEA</div></div>
+      <div class="divider"></div>
+      <div class="step"><div class="step-n">1</div><div class="step-t">Foto's afdrukken via Kruidvat app — ± €0,15 per stuk.</div></div>
+      <div class="step"><div class="step-n">2</div><div class="step-t">Span 2–3 touwtjes horizontaal langs een muur of schutting.</div></div>
+      <div class="step"><div class="step-n">3</div><div class="step-t">Hang foto's met knijpertjes — mix baby, kind en tiener.</div></div>
+      <div class="step"><div class="step-n">4</div><div class="step-t">Hang het lichtsnoer er tussenin voor extra magie.</div></div>
+      <div class="tip"><strong>Tip:</strong> Voeg een kaartje toe "18 jaar geleden..." als openingsfoto.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-num">4</div>
+      <div class="card-title">Fotohoek backdrop (selfie corner)</div>
+      <div class="card-time">± 25 min</div>
+    </div>
+    <div class="card-body">
+      <div class="mat"><div class="mat-dot"></div><div class="mat-name">Groot stuk stof of wit laken</div><div class="mat-qty">Huis/Xenos</div></div>
+      <div class="mat"><div class="mat-dot"></div><div class="mat-name">Pampasgras of droogbloemen boeket</div><div class="mat-qty">Action/Markt</div></div>
+      <div class="mat"><div class="mat-dot"></div><div class="mat-name">Losse grote ballonnen</div><div class="mat-qty">Action</div></div>
+      <div class="mat"><div class="mat-dot"></div><div class="mat-name">Props: zonnebril, bloemen, sjerp "18"</div><div class="mat-qty">Action/Hema</div></div>
+      <div class="divider"></div>
+      <div class="step"><div class="step-n">1</div><div class="step-t">Hang het witte laken strak aan de muur of schutting.</div></div>
+      <div class="step"><div class="step-n">2</div><div class="step-t">Zet aan beide zijden pampasgras of droogbloemen.</div></div>
+      <div class="step"><div class="step-n">3</div><div class="step-t">Plak of hang een paar losse ballonnen in de hoeken.</div></div>
+      <div class="step"><div class="step-n">4</div><div class="step-t">Leg props op een klein tafeltje ernaast.</div></div>
+      <div class="tip"><strong>Tip:</strong> Maak een klein bordje "Kisa's selfie corner" op karton. Buiten overdag = perfect licht!</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-num">6</div>
+      <div class="card-title">Buitentent opmaken (idee van tante!)</div>
+      <div class="card-time">± 1 uur</div>
+    </div>
+    <div class="card-body">
+      <div class="mat"><div class="mat-dot"></div><div class="mat-name">Partytent ± 3x6m (gehuurd of geleend)</div><div class="mat-qty">Boels/familie</div></div>
+      <div class="mat"><div class="mat-dot"></div><div class="mat-name">Extra lichtslingers voor langs de tentdoeken</div><div class="mat-qty">Action/IKEA</div></div>
+      <div class="mat"><div class="mat-dot"></div><div class="mat-name">Stoffen of papieren slingers oud roze/wit</div><div class="mat-qty">Action</div></div>
+      <div class="mat"><div class="mat-dot"></div><div class="mat-name">Klaptafels & stoelen (indien nodig)</div><div class="mat-qty">Huurwinkel</div></div>
+      <div class="mat"><div class="mat-dot"></div><div class="mat-name">Droogbloemen of takken als tentverstevigingsdeco</div><div class="mat-qty">Markt</div></div>
+      <div class="divider"></div>
+      <div class="step"><div class="step-n">1</div><div class="step-t">Zet de tent de dag ervoor al op — dan heb je op de feestdag zelf geen stress.</div></div>
+      <div class="step"><div class="step-n">2</div><div class="step-t">Hang lichtslingers langs de binnenkant van de tentdoeken voor een warm gouden gloed.</div></div>
+      <div class="step"><div class="step-n">3</div><div class="step-t">Bevestig een slinger of droogbloemen langs de voorkant/bovenkant van de tentopening.</div></div>
+      <div class="step"><div class="step-n">4</div><div class="step-t">Zet glazen potjes met kaarsjes op alle tafels ín de tent — 's avonds magisch!</div></div>
+      <div class="step"><div class="step-n">5</div><div class="step-t">Ballonnenboog of losse ballonnen bij de tentingang als extra eyecatcher.</div></div>
+      <div class="tip"><strong>Super voordeel:</strong> Met een tent heb je geen stress over regen of wind. Het feest gaat gewoon door en de sfeer blijft de hele avond perfect. Je tante heeft goud in handen!</div>
+    </div>
+  </div>
+      <div class="card-time">± 15 min</div>
+    </div>
+    <div class="card-body">
+      <div class="mat"><div class="mat-dot"></div><div class="mat-name">Spiegel of karton</div><div class="mat-qty">Action ± €3</div></div>
+      <div class="mat"><div class="mat-dot"></div><div class="mat-name">Goudkleurige / witte stift</div><div class="mat-qty">Action/Hema</div></div>
+      <div class="mat"><div class="mat-dot"></div><div class="mat-name">Kleine droogbloemen of lint</div><div class="mat-qty">Action</div></div>
+      <div class="divider"></div>
+      <div class="step"><div class="step-n">1</div><div class="step-t">Schrijf "Kisa 18" of "Happy 18th Kisa" in grote letters op het bord.</div></div>
+      <div class="step"><div class="step-n">2</div><div class="step-t">Voeg bloemetjes of hartjes toe rondom de tekst.</div></div>
+      <div class="step"><div class="step-n">3</div><div class="step-t">Zet op een ezel of leun tegen muur bij de ingang.</div></div>
+      <div class="tip"><strong>Tip:</strong> Spiegel van Action (± €3) met goudstift is het mooist. Kisa kan hem daarna gewoon houden!</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PLAYLIST ===== -->
+<div id="tab-playlist" class="section">
+  <p class="sec-title">Playlist</p>
+  <p class="sec-sub">Feest + instrumentaal · 45 nummers</p>
+
+  <div class="cat-label">Opening — aankomst & sfeer</div>
+  <div class="track"><span class="track-num">1</span><div class="track-info"><div class="track-title">good 4 u</div><div class="track-artist">Olivia Rodrigo</div></div><span class="badge badge-vibe">vibe</span></div>
+  <div class="track"><span class="track-num">2</span><div class="track-info"><div class="track-title">Flowers</div><div class="track-artist">Miley Cyrus</div></div><span class="badge badge-18">18</span></div>
+  <div class="track"><span class="track-num">3</span><div class="track-info"><div class="track-title">Sun Roof</div><div class="track-artist">Nicky Youre & dazy</div></div><span class="badge badge-vibe">vibe</span></div>
+  <div class="track"><span class="track-num">4</span><div class="track-info"><div class="track-title">As It Was</div><div class="track-artist">Harry Styles</div></div><span class="badge badge-vibe">vibe</span></div>
+  <div class="track"><span class="track-num">5</span><div class="track-info"><div class="track-title">Girl Like Me</div><div class="track-artist">Shakira ft. Black Eyed Peas</div></div><span class="badge badge-energy">energie</span></div>
+
+  <div class="cat-label">Gezelligheid & genieten</div>
+  <div class="track"><span class="track-num">6</span><div class="track-info"><div class="track-title">Levitating</div><div class="track-artist">Dua Lipa</div></div><span class="badge badge-vibe">vibe</span></div>
+  <div class="track"><span class="track-num">7</span><div class="track-info"><div class="track-title">Golden Hour</div><div class="track-artist">JVKE</div></div><span class="badge badge-vibe">vibe</span></div>
+  <div class="track"><span class="track-num">8</span><div class="track-info"><div class="track-title">Woman</div><div class="track-artist">Doja Cat</div></div><span class="badge badge-18">18</span></div>
+  <div class="track"><span class="track-num">9</span><div class="track-info"><div class="track-title">Cruel Summer</div><div class="track-artist">Taylor Swift</div></div><span class="badge badge-vibe">vibe</span></div>
+  <div class="track"><span class="track-num">10</span><div class="track-info"><div class="track-title">Espresso</div><div class="track-artist">Sabrina Carpenter</div></div><span class="badge badge-vibe">vibe</span></div>
+  <div class="track"><span class="track-num">11</span><div class="track-info"><div class="track-title">drivers license</div><div class="track-artist">Olivia Rodrigo</div></div><span class="badge badge-18">18</span></div>
+  <div class="track"><span class="track-num">12</span><div class="track-info"><div class="track-title">Love Story (Taylor's Version)</div><div class="track-artist">Taylor Swift</div></div><span class="badge badge-vibe">romantisch</span></div>
+  <div class="track"><span class="track-num">13</span><div class="track-info"><div class="track-title">Watermelon Sugar</div><div class="track-artist">Harry Styles</div></div><span class="badge badge-vibe">vibe</span></div>
+  <div class="track"><span class="track-num">14</span><div class="track-info"><div class="track-title">Die For You</div><div class="track-artist">The Weeknd</div></div><span class="badge badge-vibe">vibe</span></div>
+  <div class="track"><span class="track-num">15</span><div class="track-info"><div class="track-title">Peaches</div><div class="track-artist">Justin Bieber ft. Daniel Caesar</div></div><span class="badge badge-vibe">vibe</span></div>
+
+  <div class="cat-label">Energie — dansen & taart</div>
+  <div class="track"><span class="track-num">16</span><div class="track-info"><div class="track-title">About Damn Time</div><div class="track-artist">Lizzo</div></div><span class="badge badge-18">18</span></div>
+  <div class="track"><span class="track-num">17</span><div class="track-info"><div class="track-title">I Ain't Worried</div><div class="track-artist">OneRepublic</div></div><span class="badge badge-energy">energie</span></div>
+  <div class="track"><span class="track-num">18</span><div class="track-info"><div class="track-title">Running Up That Hill</div><div class="track-artist">Kate Bush</div></div><span class="badge badge-energy">energie</span></div>
+  <div class="track"><span class="track-num">19</span><div class="track-info"><div class="track-title">Shake It Off</div><div class="track-artist">Taylor Swift</div></div><span class="badge badge-energy">energie</span></div>
+  <div class="track"><span class="track-num">20</span><div class="track-info"><div class="track-title">POWER</div><div class="track-artist">Anitta</div></div><span class="badge badge-energy">energie</span></div>
+
+  <div class="cat-label">Afsluiting — warm & intiem</div>
+  <div class="track"><span class="track-num">21</span><div class="track-info"><div class="track-title">Lovely</div><div class="track-artist">Billie Eilish & Khalid</div></div><span class="badge badge-vibe">vibe</span></div>
+  <div class="track"><span class="track-num">22</span><div class="track-info"><div class="track-title">Happier Than Ever</div><div class="track-artist">Billie Eilish</div></div><span class="badge badge-18">18</span></div>
+  <div class="track"><span class="track-num">23</span><div class="track-info"><div class="track-title">Liability</div><div class="track-artist">Lorde</div></div><span class="badge badge-vibe">vibe</span></div>
+  <div class="track"><span class="track-num">24</span><div class="track-info"><div class="track-title">A Sky Full of Stars</div><div class="track-artist">Coldplay</div></div><span class="badge badge-vibe">afsluiter</span></div>
+
+  <div class="cat-label">Instrumentaal — aankomst & eten</div>
+  <div class="track"><span class="track-num">25</span><div class="track-info"><div class="track-title">Experience</div><div class="track-artist">Ludovico Einaudi</div></div><span class="badge badge-piano">piano</span></div>
+  <div class="track"><span class="track-num">26</span><div class="track-info"><div class="track-title">River Flows in You</div><div class="track-artist">Yiruma</div></div><span class="badge badge-piano">piano</span></div>
+  <div class="track"><span class="track-num">27</span><div class="track-info"><div class="track-title">Comptine d'un autre été</div><div class="track-artist">Yann Tiersen</div></div><span class="badge badge-piano">piano</span></div>
+  <div class="track"><span class="track-num">28</span><div class="track-info"><div class="track-title">Nuvole Bianche</div><div class="track-artist">Ludovico Einaudi</div></div><span class="badge badge-piano">piano</span></div>
+  <div class="track"><span class="track-num">29</span><div class="track-info"><div class="track-title">Kiss the Rain</div><div class="track-artist">Yiruma</div></div><span class="badge badge-piano">piano</span></div>
+  <div class="track"><span class="track-num">30</span><div class="track-info"><div class="track-title">La Vie En Rose</div><div class="track-artist">instrumentale versie</div></div><span class="badge badge-acoustic">akoestisch</span></div>
+  <div class="track"><span class="track-num">31</span><div class="track-info"><div class="track-title">Canon in D (akoestische gitaar)</div><div class="track-artist">Pachelbel / gitaarversie</div></div><span class="badge badge-acoustic">akoestisch</span></div>
+  <div class="track"><span class="track-num">32</span><div class="track-info"><div class="track-title">Clair de Lune</div><div class="track-artist">Claude Debussy</div></div><span class="badge badge-piano">piano</span></div>
+  <div class="track"><span class="track-num">33</span><div class="track-info"><div class="track-title">Gymnopédie No. 1</div><div class="track-artist">Erik Satie</div></div><span class="badge badge-piano">piano</span></div>
+
+  <div class="cat-label">Instrumentaal — tuin & golden hour</div>
+  <div class="track"><span class="track-num">34</span><div class="track-info"><div class="track-title">Weightless</div><div class="track-artist">Marconi Union</div></div><span class="badge badge-ambient">ambient</span></div>
+  <div class="track"><span class="track-num">35</span><div class="track-info"><div class="track-title">Sunset Lover (instrumental)</div><div class="track-artist">Petit Biscuit</div></div><span class="badge badge-ambient">ambient</span></div>
+  <div class="track"><span class="track-num">36</span><div class="track-info"><div class="track-title">April</div><div class="track-artist">Nils Frahm</div></div><span class="badge badge-piano">piano</span></div>
+  <div class="track"><span class="track-num">37</span><div class="track-info"><div class="track-title">coffee (instrumental)</div><div class="track-artist">beabadoobee</div></div><span class="badge badge-acoustic">akoestisch</span></div>
+  <div class="track"><span class="track-num">38</span><div class="track-info"><div class="track-title">Acoustic Breeze</div><div class="track-artist">Bensound</div></div><span class="badge badge-acoustic">akoestisch</span></div>
+
+  <div class="cat-label">Instrumentaal — laat op de avond</div>
+  <div class="track"><span class="track-num">39</span><div class="track-info"><div class="track-title">On the Nature of Daylight</div><div class="track-artist">Max Richter</div></div><span class="badge badge-ambient">ambient</span></div>
+  <div class="track"><span class="track-num">40</span><div class="track-info"><div class="track-title">Falling (piano cover)</div><div class="track-artist">Harry Styles</div></div><span class="badge badge-piano">piano</span></div>
+  <div class="track"><span class="track-num">41</span><div class="track-info"><div class="track-title">Divenire</div><div class="track-artist">Ludovico Einaudi</div></div><span class="badge badge-piano">piano</span></div>
+  <div class="track"><span class="track-num">42</span><div class="track-info"><div class="track-title">Strawberry Fields (lofi piano)</div><div class="track-artist">lofi covers</div></div><span class="badge badge-piano">piano</span></div>
+  <div class="track"><span class="track-num">43</span><div class="track-info"><div class="track-title">Bloom (instrumental)</div><div class="track-artist">The Paper Kites</div></div><span class="badge badge-acoustic">akoestisch</span></div>
+  <div class="track"><span class="track-num">44</span><div class="track-info"><div class="track-title">Summer (Four Seasons)</div><div class="track-artist">Vivaldi / lichte versie</div></div><span class="badge badge-ambient">ambient</span></div>
+  <div class="track"><span class="track-num">45</span><div class="track-info"><div class="track-title">The Night Will Always Win</div><div class="track-artist">Manchester Orchestra</div></div><span class="badge badge-vibe">afsluiter</span></div>
+
+  <div class="deco">· · ·</div>
+</div>
+
+<!-- ===== PLANNING ===== -->
+<div id="tab-planning" class="section">
+  <p class="sec-title">Dag planning</p>
+  <p class="sec-sub">Tijdlijn voor de grote dag</p>
+
+  <div class="timeline-item">
+    <div class="tl-line-wrap"><div class="tl-dot"></div><div class="tl-line"></div></div>
+    <div class="tl-content"><div class="tl-time">09:00</div><div class="tl-title">Tent staat al klaar!</div><div class="tl-desc">Buitentent is dag ervoor al opgezet. Begin nu met decoreren: ballonnenboog, fotomuur, fotohoek.</div></div>
+  </div>
+  <div class="timeline-item">
+    <div class="tl-line-wrap"><div class="tl-dot"></div><div class="tl-line"></div></div>
+    <div class="tl-content"><div class="tl-time">11:00</div><div class="tl-title">Tafels & kaarsen opmaken</div><div class="tl-desc">Glazen potjes, bloemen, tafelkleed. Buffettafel en desserthoek inrichten.</div></div>
+  </div>
+  <div class="timeline-item">
+    <div class="tl-line-wrap"><div class="tl-dot"></div><div class="tl-line"></div></div>
+    <div class="tl-content"><div class="tl-time">13:00</div><div class="tl-title">Eten klaarmaken</div><div class="tl-desc">Charcuterie bord, caprese spiesjes, dranken klaar zetten. Cupcakes ophalen/afmaken.</div></div>
+  </div>
+  <div class="timeline-item">
+    <div class="tl-line-wrap"><div class="tl-dot"></div><div class="tl-line"></div></div>
+    <div class="tl-content"><div class="tl-time">14:30</div><div class="tl-title">Laatste check</div><div class="tl-desc">Alles staat? Muziek aan (instrumentaal). Kaarsen aan. Welkomstbord bij de deur.</div></div>
+  </div>
+  <div class="timeline-item">
+    <div class="tl-line-wrap"><div class="tl-dot"></div><div class="tl-line"></div></div>
+    <div class="tl-content"><div class="tl-time">15:00</div><div class="tl-title">Gasten komen aan 🌸</div><div class="tl-desc">Instrumentale muziek speelt. Iedereen welkom heten, drankjes inschenken.</div></div>
+  </div>
+  <div class="timeline-item">
+    <div class="tl-line-wrap"><div class="tl-dot"></div><div class="tl-line"></div></div>
+    <div class="tl-content"><div class="tl-time">16:00</div><div class="tl-title">Feestmuziek aan & fotohoek open</div><div class="tl-desc">Switch naar de feestplaylist. Iedereen naar de fotohoek, tuin games beginnen.</div></div>
+  </div>
+  <div class="timeline-item">
+    <div class="tl-line-wrap"><div class="tl-dot"></div><div class="tl-line"></div></div>
+    <div class="tl-content"><div class="tl-time">18:00</div><div class="tl-title">Taart & kaarsjes 🎂</div><div class="tl-desc">Iedereen zingt, kaarsjes uitblazen, foto's maken. About Damn Time van Lizzo is perfect hier!</div></div>
+  </div>
+  <div class="timeline-item">
+    <div class="tl-line-wrap"><div class="tl-dot"></div><div class="tl-line"></div></div>
+    <div class="tl-content"><div class="tl-time">19:30</div><div class="tl-title">Wensenpotje moment</div><div class="tl-desc">Gasten schrijven een wens op kaartje voor Kisa. Rustig moment in de avond.</div></div>
+  </div>
+  <div class="timeline-item">
+    <div class="tl-line-wrap"><div class="tl-dot"></div><div class="tl-line"></div></div>
+    <div class="tl-content"><div class="tl-time">20:30</div><div class="tl-title">Gouden uur in de tuin</div><div class="tl-desc">Lichtslingers aan, kaarsen aan. Switch naar rustigere muziek. Gezellig napraten.</div></div>
+  </div>
+  <div class="timeline-item">
+    <div class="tl-line-wrap"><div class="tl-dot"></div></div>
+    <div class="tl-content"><div class="tl-time">Laat</div><div class="tl-title">Afsluiting 🌙</div><div class="tl-desc">Instrumentale afsluitmuziek. Kisa leest haar wenskaartjes. Een avond om nooit te vergeten.</div></div>
+  </div>
+
+  <div style="height:16px;"></div>
+
+  <div style="background: var(--rose-pale); border: 1px solid var(--border-strong); border-radius: 14px; padding: 16px; margin-top: 8px;">
+    <div style="font-family:'Cormorant Garamond',serif; font-size:18px; color:var(--rose-deep); margin-bottom:6px;">Budget overzicht</div>
+    <div style="display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px solid var(--border); font-size:13px;"><span style="color:var(--text-muted);">Buitentent (huur of gratis geleend)</span><span style="color:var(--rose-deep);">€0–60</span></div>
+    <div style="display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px solid var(--border); font-size:13px;"><span style="color:var(--text-muted);">Decoratie (Action/Xenos)</span><span style="color:var(--rose-deep);">€30–50</span></div>
+    <div style="display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px solid var(--border); font-size:13px;"><span style="color:var(--text-muted);">Ballonnen & verlichting</span><span style="color:var(--rose-deep);">€20–30</span></div>
+    <div style="display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px solid var(--border); font-size:13px;"><span style="color:var(--text-muted);">Eten & hapjes buffet</span><span style="color:var(--rose-deep);">€60–80</span></div>
+    <div style="display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px solid var(--border); font-size:13px;"><span style="color:var(--text-muted);">Taart + cupcakes (zelfgemaakt)</span><span style="color:var(--rose-deep);">€15–25</span></div>
+    <div style="display:flex; justify-content:space-between; padding:6px 0; font-size:13px;"><span style="color:var(--text-muted);">Dranken</span><span style="color:var(--rose-deep);">€25–40</span></div>
+    <div style="display:flex; justify-content:space-between; padding-top:10px; margin-top:4px; border-top:1px solid var(--border-strong);"><span style="font-weight:500; color:var(--rose-deep);">Totaal</span><span style="font-family:'Cormorant Garamond',serif; font-size:22px; color:var(--rose-deep);">±€150–285</span></div>
+  </div>
+
+  <div class="bottom-safe"></div>
+</div>
+
+<script>
+  function showTab(name) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    event.currentTarget.classList.add('active');
+    updateProgress();
+  }
+
+  function toggleCheck(el) {
+    el.classList.toggle('done');
+    saveState();
+    updateProgress();
+  }
+
+  function updateProgress() {
+    // Checklist
+    const clItems = document.querySelectorAll('#checklist-items .check-item');
+    const clDone = document.querySelectorAll('#checklist-items .check-item.done').length;
+    const clPct = clItems.length ? Math.round(clDone / clItems.length * 100) : 0;
+    document.getElementById('cl-done').textContent = clDone + ' gedaan';
+    document.getElementById('cl-pct').textContent = clPct + '%';
+    document.getElementById('cl-bar').style.width = clPct + '%';
+
+    // Boodschappen
+    const bItems = document.querySelectorAll('#bood-items .check-item');
+    const bDone = document.querySelectorAll('#bood-items .check-item.done').length;
+    const bPct = bItems.length ? Math.round(bDone / bItems.length * 100) : 0;
+    document.getElementById('bood-done').textContent = bDone + ' gedaan';
+    document.getElementById('bood-pct').textContent = bPct + '%';
+    document.getElementById('bood-bar').style.width = bPct + '%';
+  }
+
+  function saveState() {
+    const state = {};
+    document.querySelectorAll('.check-item').forEach((el, i) => {
+      state[i] = el.classList.contains('done');
+    });
+    try { localStorage.setItem('kisa18', JSON.stringify(state)); } catch(e) {}
+  }
+
+  function loadState() {
+    try {
+      const state = JSON.parse(localStorage.getItem('kisa18') || '{}');
+      document.querySelectorAll('.check-item').forEach((el, i) => {
+        if (state[i]) el.classList.add('done');
+      });
+    } catch(e) {}
+    updateProgress();
+  }
+
+  loadState();
+</script>
+</body>
+</html>
